@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================
+   تم رنگی و توکن‌های طراحی — منتقل‌شده از v0-globals.css
+   ========================================================= */
+:root {
+  color-scheme: light;
+
+  /* neutrals */
+  --background: oklch(0.985 0.006 160);
+  --foreground: oklch(0.24 0.025 165);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.24 0.025 165);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.24 0.025 165);
+  --muted: oklch(0.955 0.012 165);
+  --muted-foreground: oklch(0.52 0.02 165);
+
+  /* emerald brand */
+  --primary: oklch(0.53 0.093 168);
+  --primary-foreground: oklch(0.99 0.005 160);
+  --secondary: oklch(0.94 0.026 165);
+  --secondary-foreground: oklch(0.32 0.05 168);
+
+  /* soft sand accent */
+  --accent: oklch(0.9 0.055 92);
+  --accent-foreground: oklch(0.32 0.05 92);
+
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.99 0.005 160);
+  --border: oklch(0.9 0.018 165);
+  --input: oklch(0.9 0.018 165);
+  --ring: oklch(0.53 0.093 168);
+  --radius: 0.9rem;
+
+  /* =======================================================
+     رفع باگ ریشه‌ای: تعدیل‌کننده‌ی شفافیت تیلویند (مثل
+     text-foreground/70 یا from-background/80) روی رنگ‌های بالا
+     هرگز کار نمی‌کرد — نه فقط در هیرو، در سرتاسر پروژه.
+
+     تیلویند فقط وقتی می‌تواند به یک رنگ سفارشی «/NN» (شفافیت)
+     اضافه کند که آن رنگ در tailwind_config.js با الگوی
+     rgb(var(--x) / <alpha-value>) تعریف شده باشد و خودِ متغیر
+     فقط سه عدد کانال (R G B) را نگه دارد — نه یک رشته‌ی کامل
+     رنگ مثل oklch(...) یا #hex. چون این متغیرهای بالا رشته‌ی
+     کامل oklch هستند (و همین‌طور باید بمانند، چون color-mix()
+     در .glass/.aurora/.grid-lها پایین همین فایل به آن‌ها به
+     همین شکل نیاز دارد)، تیلویند برای هر کلاس «رنگ/عدد» که در
+     کد از این متغیرها ساخته می‌شد، هیچ CSS‌ای تولید نمی‌کرد —
+     یعنی آن کلاس کاملاً بی‌اثر بود (نه محو، نه با شفافیت اشتباه؛
+     دقیقاً هیچ). این‌جا با یک ابزار تبدیل رنگ دقیق (culori)
+     دقیقاً همین ۱۹ رنگ به معادل RGB‌شان تبدیل شدند — نه رنگ
+     تخمینی، دقیقاً همان رنگی که مقدار oklch بالا نمایش می‌دهد.
+     tailwind_config.js اکنون از همین متغیرهای *-rgb برای همه‌ی
+     کلاس‌های رنگی (چه با شفافیت چه بدون آن) استفاده می‌کند. */
+  --background-rgb: 247 251 249;
+  --foreground-rgb: 20 35 28;
+  --card-rgb: 255 255 255;
+  --card-foreground-rgb: 20 35 28;
+  --popover-rgb: 255 255 255;
+  --popover-foreground-rgb: 20 35 28;
+  --muted-rgb: 233 243 238;
+  --muted-foreground-rgb: 95 109 102;
+  --primary-rgb: 37 125 97;
+  --primary-foreground-rgb: 249 253 251;
+  --secondary-rgb: 220 241 231;
+  --secondary-foreground-rgb: 20 59 46;
+  --accent-rgb: 235 222 181;
+  --accent-foreground-rgb: 60 50 18;
+  --destructive-rgb: 231 0 11;
+  --destructive-foreground-rgb: 249 253 251;
+  --border-rgb: 212 226 219;
+  --input-rgb: 212 226 219;
+  --ring-rgb: 37 125 97;
+}
+
+/* =========================================================
+   قوانین پایه پروژه اصلی (Core) — حفظ‌شده بدون تغییر منطقی
+   ========================================================= */
+html,
+body,
+#root {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  scroll-behavior: smooth !important;
+  background-color: var(--background);
+  font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
+  color: var(--foreground);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   یوتیلیتی‌های سفارشی v0 (glassmorphism، aurora، grid-lines)
+   ========================================================= */
+@layer utilities {
+  .glass {
+    background-color: color-mix(in oklab, var(--card) 55%, transparent);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid color-mix(in oklab, var(--card) 70%, var(--border));
+    box-shadow: 0 1px 0 0 color-mix(in oklab, white 60%, transparent) inset;
+  }
+  .glass-strong {
+    background-color: color-mix(in oklab, var(--card) 78%, transparent);
+    backdrop-filter: blur(28px) saturate(160%);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
+    border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+  }
+  .aurora {
+    background-image:
+      radial-gradient(60% 55% at 78% 12%, color-mix(in oklab, var(--primary) 22%, transparent), transparent 70%),
+      radial-gradient(50% 45% at 12% 8%, color-mix(in oklab, var(--accent) 30%, transparent), transparent 70%),
+      radial-gradient(45% 50% at 50% 100%, color-mix(in oklab, var(--primary) 12%, transparent), transparent 70%);
+  }
+  .grid-lines {
+    background-image:
+      linear-gradient(to right, color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(70% 60% at 50% 20%, black, transparent 80%);
+  }
+  .rise {
+    animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .float-slow {
+    animation: floaty 9s ease-in-out infinite;
+  }
+  /* برای متونی که مستقیماً روی عکس (بدون پس‌زمینه‌ی جامد) قرار می‌گیرند
+     تا در هر عکسی خوانا بمانند — معادل قانون سراسری قدیمی پروژه، اما
+     این‌بار اختیاری و فقط جایی که لازم است. */
+  .text-shadow-photo {
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .float-slow {
+    animation: none;
+  }
+}
+
+/* =========================================================
+   قوانین قدیمی تایپوگرافی که هنوز صفحات ادغام‌نشده (مثل ادمین
+   پنل و لاگین) به آن‌ها وابسته‌اند — تا زمان بازطراحی کامل آن
+   صفحات، اینجا نگه داشته می‌شوند تا چیزی نشکند.
+   ========================================================= */
+h1, h2, h3, h4, h5, h6, strong, b {
+  line-height: 1.4;
+}
+
+p, li, label, textarea, article {
+  line-height: 1.9;
+}
