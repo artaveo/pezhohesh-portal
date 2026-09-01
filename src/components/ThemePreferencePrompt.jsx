@@ -15,11 +15,27 @@ import { useTheme } from '../contexts/ThemeContext'
  * جایگاه: پایین صفحه (نه بالا، تا با هدر/نوار اعلانیه‌ی سقف سایت که خودش
  * ارتفاع متغیر دارد تداخلی نداشته باشد) — الگوی استاندارد و آشنا برای
  * این نوع درخواست‌های غیرمسدودکننده (مشابه بنر رضایت کوکی).
+ *
+ * === تصمیم عمدی: رنگ خودِ کارت، برعکسِ تم واقعی صفحه است ===
+ * اگر سایت (بر اساس تنظیم دستگاه) روشن باز شده، این کارت خودش تیره
+ * است؛ اگر سایت تیره باز شده، این کارت خودش روشن است. هدف: هم جلب
+ * توجه بیشتر با همان اولین نگاه (چون رنگش با بقیه‌ی صفحه یکی نیست)،
+ * هم نمایش زنده‌ی «نمونه»ی همون گزینه‌ی مقابل، دقیقاً همان لحظه‌ای که
+ * از کاربر می‌خواهیم بین‌شان انتخاب کند. این کار با کلاس‌های مستقل
+ * .theme-dark / .theme-light (تعریف‌شده در index.css، دقیقاً همان
+ * توکن‌های رنگی html.dark و :root ولی قابل‌اعمال روی هر عنصر دیگر هم)
+ * انجام می‌شود — نه با تغییر تم واقعی سایت، فقط یک بازتعریف موضعی
+ * روی همین یک کارت. به همین دلیل هم از جلوه‌ی شیشه‌ای نیمه‌شفاف
+ * (glass-strong که رنگش را با color-mix از پس‌زمینه‌ی واقعی صفحه
+ * می‌گیرد) استفاده نشده و به‌جایش یک کارت کاملاً مات و توپر دارد —
+ * تا رنگ معکوس‌شده، تمیز و بدون قاطی‌شدن با پس‌زمینه‌ی واقعی دیده شود.
  */
 export function ThemePreferencePrompt() {
-  const { promptVisible, chooseTheme, dismissPrompt } = useTheme()
+  const { theme, promptVisible, chooseTheme, dismissPrompt } = useTheme()
 
   if (!promptVisible) return null
+
+  const inverseThemeClass = theme === 'dark' ? 'theme-light' : 'theme-dark'
 
   const options = [
     { mode: 'system', label: 'هماهنگ با دستگاهم', Icon: Monitor },
@@ -33,7 +49,9 @@ export function ThemePreferencePrompt() {
       aria-label="انتخاب ظاهر سایت"
       className="fixed inset-x-4 bottom-4 z-40 mx-auto max-w-sm pb-[env(safe-area-inset-bottom)] sm:inset-x-auto sm:end-4 sm:bottom-5"
     >
-      <div className="glass-strong rise relative rounded-3xl p-4 shadow-[0_25px_60px_-25px_oklch(0.24_0.05_165/0.55)] sm:p-5">
+      <div
+        className={`${inverseThemeClass} rise relative rounded-3xl border border-border bg-card p-4 text-foreground shadow-[0_25px_60px_-25px_rgba(0,0,0,0.55)] sm:p-5`}
+      >
         <button
           type="button"
           onClick={dismissPrompt}
@@ -55,7 +73,7 @@ export function ThemePreferencePrompt() {
               key={mode}
               type="button"
               onClick={() => chooseTheme(mode)}
-              className="flex flex-col items-center gap-1.5 rounded-2xl border border-border bg-card/60 px-2 py-3 text-[11px] font-medium text-foreground transition-colors hover:border-primary hover:bg-secondary"
+              className="flex flex-col items-center gap-1.5 rounded-2xl border border-border bg-card px-2 py-3 text-[11px] font-medium text-foreground transition-colors hover:border-primary hover:bg-secondary"
             >
               <Icon className="size-4 text-primary" aria-hidden="true" />
               {label}

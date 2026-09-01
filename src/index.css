@@ -97,8 +97,16 @@
    رنگ در پروژه (کلاس‌های Tailwind بر پایه‌ی *-rgb، و color-mix
    در oklch برای glass/aurora/grid-lines) از هم عقب نیفتند.
    خانواده‌ی رنگی برند (سبز زمردی) و لهجه‌ی شنی حفظ شده، فقط
-   روشنایی (Lightness) برای خوانایی روی پس‌زمینه‌ی تیره تنظیم شد. */
-html.dark {
+   روشنایی (Lightness) برای خوانایی روی پس‌زمینه‌ی تیره تنظیم شد.
+
+   === چرا هم html.dark هم .theme-dark؟ ===
+   html.dark همان سوییچ سراسری قبلی است (کل سایت). .theme-dark یک
+   کلاس مستقل و قابل‌استفاده روی هر عنصر دیگری هم هست — مثلاً
+   ThemePreferencePrompt.jsx از آن استفاده می‌کند تا فقط همان یک
+   کارت را، صرف‌نظر از تم واقعی صفحه، به‌صورت موضعی تیره کند (چون
+   قرار است اولین نمایش این کارت همیشه برعکس تم فعلی سایت باشد). */
+html.dark,
+.theme-dark {
   color-scheme: dark;
 
   --background: oklch(0.19 0.018 165);
@@ -143,6 +151,58 @@ html.dark {
   --border-rgb: 44 57 51;
   --input-rgb: 44 57 51;
   --ring-rgb: 55 161 127;
+}
+
+/* معادل معکوس بالا: همان توکن‌های روشنِ :root، اما به‌صورت یک کلاس
+   مستقل که هر جا لازم باشد (مثلاً روی کارت درخواست تم، وقتی صفحه
+   واقعاً در حالت شب است) می‌توان صریحاً «روشن» را روی یک زیردرخت
+   خاص تحمیل کرد، بدون اینکه لازم باشد html.dark را از کل صفحه
+   بردارید. مقادیر عیناً از :root کپی شده‌اند. */
+.theme-light {
+  color-scheme: light;
+
+  --background: oklch(0.985 0.006 160);
+  --foreground: oklch(0.24 0.025 165);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.24 0.025 165);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.24 0.025 165);
+  --muted: oklch(0.955 0.012 165);
+  --muted-foreground: oklch(0.52 0.02 165);
+
+  --primary: oklch(0.53 0.093 168);
+  --primary-foreground: oklch(0.99 0.005 160);
+  --secondary: oklch(0.94 0.026 165);
+  --secondary-foreground: oklch(0.32 0.05 168);
+
+  --accent: oklch(0.9 0.055 92);
+  --accent-foreground: oklch(0.32 0.05 92);
+
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.99 0.005 160);
+  --border: oklch(0.9 0.018 165);
+  --input: oklch(0.9 0.018 165);
+  --ring: oklch(0.53 0.093 168);
+
+  --background-rgb: 247 251 249;
+  --foreground-rgb: 20 35 28;
+  --card-rgb: 255 255 255;
+  --card-foreground-rgb: 20 35 28;
+  --popover-rgb: 255 255 255;
+  --popover-foreground-rgb: 20 35 28;
+  --muted-rgb: 233 243 238;
+  --muted-foreground-rgb: 95 109 102;
+  --primary-rgb: 37 125 97;
+  --primary-foreground-rgb: 249 253 251;
+  --secondary-rgb: 220 241 231;
+  --secondary-foreground-rgb: 20 59 46;
+  --accent-rgb: 235 222 181;
+  --accent-foreground-rgb: 60 50 18;
+  --destructive-rgb: 231 0 11;
+  --destructive-foreground-rgb: 249 253 251;
+  --border-rgb: 212 226 219;
+  --input-rgb: 212 226 219;
+  --ring-rgb: 37 125 97;
 }
 
 /* در حالت شب، افکت شیشه‌ای (.glass/.glass-strong) که با color-mix روی
