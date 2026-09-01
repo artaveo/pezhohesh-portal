@@ -76,6 +76,84 @@
   --border-rgb: 212 226 219;
   --input-rgb: 212 226 219;
   --ring-rgb: 37 125 97;
+
+  /* === رفع باگ نوار اعلانیه/هدر «نصفه» روی موبایل ===
+     مقدار واقعی این متغیر توسط SiteHeader.jsx (با ResizeObserver، بر
+     اساس ارتفاع واقعی هدر) در لحظه محاسبه و جایگزین می‌شود؛ این‌جا فقط
+     یک مقدار پیش‌فرض معقول (تقریباً هم‌ارزِ حالت بدون نوار اعلانیه در
+     موبایل) گذاشته شده تا اگر به هر دلیلی جاوااسکریپت هنوز اجرا نشده
+     باشد، فاصله‌ی بالای صفحه هرگز صفر یا منفی نشود. */
+  --header-clearance: 6rem;
+}
+
+/* =========================================================
+   تم شب (Dark Mode) — مقادیر :root بالا برای حالت روشن‌اند؛
+   وقتی کلاس .dark روی <html> باشد (به دست ThemeContext.jsx یا
+   اسکریپت ضد-فلاش داخل index.html)، همین ۱۹ توکن رنگی این‌جا
+   بازتعریف می‌شوند — نه رنگ‌های تصادفی/حدسی، بلکه با همان روال
+   دقیق ابزار تبدیل رنگ (oklch → sRGB) که برای رفع باگ opacity
+   استفاده شد: هم مقدار oklch اصلی و هم معادل RGB دقیقش با هم
+   محاسبه و هم‌زمان نگه داشته شدند تا هیچ‌کدام از دو مسیر مصرف
+   رنگ در پروژه (کلاس‌های Tailwind بر پایه‌ی *-rgb، و color-mix
+   در oklch برای glass/aurora/grid-lines) از هم عقب نیفتند.
+   خانواده‌ی رنگی برند (سبز زمردی) و لهجه‌ی شنی حفظ شده، فقط
+   روشنایی (Lightness) برای خوانایی روی پس‌زمینه‌ی تیره تنظیم شد. */
+html.dark {
+  color-scheme: dark;
+
+  --background: oklch(0.19 0.018 165);
+  --foreground: oklch(0.93 0.012 160);
+  --card: oklch(0.235 0.02 165);
+  --card-foreground: oklch(0.93 0.012 160);
+  --popover: oklch(0.235 0.02 165);
+  --popover-foreground: oklch(0.93 0.012 160);
+  --muted: oklch(0.27 0.018 165);
+  --muted-foreground: oklch(0.68 0.02 165);
+
+  --primary: oklch(0.64 0.11 168);
+  --primary-foreground: oklch(0.14 0.03 165);
+  --secondary: oklch(0.3 0.035 165);
+  --secondary-foreground: oklch(0.9 0.03 160);
+
+  --accent: oklch(0.34 0.045 92);
+  --accent-foreground: oklch(0.92 0.035 92);
+
+  --destructive: oklch(0.62 0.21 27.325);
+  --destructive-foreground: oklch(0.14 0.03 165);
+  --border: oklch(0.33 0.02 165);
+  --input: oklch(0.33 0.02 165);
+  --ring: oklch(0.64 0.11 168);
+
+  --background-rgb: 12 22 18;
+  --foreground-rgb: 225 234 229;
+  --card-rgb: 21 33 28;
+  --card-foreground-rgb: 225 234 229;
+  --popover-rgb: 21 33 28;
+  --popover-foreground-rgb: 225 234 229;
+  --muted-rgb: 30 41 36;
+  --muted-foreground-rgb: 141 156 149;
+  --primary-rgb: 55 161 127;
+  --primary-foreground-rgb: 0 13 6;
+  --secondary-rgb: 28 51 41;
+  --secondary-foreground-rgb: 206 229 215;
+  --accent-rgb: 64 55 27;
+  --accent-foreground-rgb: 237 228 203;
+  --destructive-rgb: 234 61 55;
+  --destructive-foreground-rgb: 0 13 6;
+  --border-rgb: 44 57 51;
+  --input-rgb: 44 57 51;
+  --ring-rgb: 55 161 127;
+}
+
+/* در حالت شب، افکت شیشه‌ای (.glass/.glass-strong) که با color-mix روی
+   var(--card) سفید حساب شده کمی روشن‌تر از حالت معمول به نظر می‌رسد؛
+   درصد ترکیب را در تم تاریک کمی کاهش می‌دهیم تا شیشه به‌جای «روشن‌شدن»،
+   واقعاً شیشه‌ای و تیره بماند. */
+html.dark .glass {
+  background-color: color-mix(in oklab, var(--card) 65%, transparent);
+}
+html.dark .glass-strong {
+  background-color: color-mix(in oklab, var(--card) 86%, transparent);
 }
 
 /* =========================================================
@@ -164,10 +242,40 @@ body,
   }
 }
 
+/* === نوار اعلانیه: اسکرول افقی متن وقتی جا نمی‌شود ===
+   دو کپی از متن پشت‌سرهم چیده شده و translateX(-50%) دقیقاً به‌اندازه‌ی
+   یک کپی کامل جابه‌جا می‌شود؛ چون هر دو کپی عیناً یکسانند، لحظه‌ی برگشت
+   به 0% از نظر بصری هیچ پرش/درزی ندارد (لوپ کاملاً بی‌درز). */
+@keyframes announcement-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.announcement-marquee {
+  animation-name: announcement-marquee;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .rise,
   .float-slow {
     animation: none;
+  }
+  /* برای کاربرانی که «کاهش حرکت» را در سیستم‌عامل/مرورگرشان فعال کرده‌اند،
+     به‌جای نسخه‌ی ساکن و بدون‌حرکت دو کپی روی هم (که باز هم بخشی از متن
+     پنهان می‌ماند)، متن کامل به‌صورت چندخطی و بدون انیمیشن نمایش داده
+     می‌شود — هدف اصلی («تمام متن قابل خواندن باشد») برای این کاربران هم
+     حفظ می‌شود. */
+  .announcement-marquee {
+    animation: none;
+    white-space: normal;
+  }
+  .announcement-marquee > span:last-child {
+    display: none;
   }
 }
 

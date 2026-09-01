@@ -42,7 +42,11 @@ export function Hero() {
   const heroHoursFriday = portalData?.heroHoursFriday || 'جمعه‌ها ۹ صبح تا ۳ بعدازظهر'
 
   return (
-    <section id="top" className="relative overflow-hidden pt-28 pb-14 sm:pt-36 sm:pb-20 lg:pt-40">
+    <section
+      id="top"
+      className="relative overflow-hidden pb-14 sm:pb-20"
+      style={{ paddingTop: 'var(--header-clearance)' }}
+    >
       <div aria-hidden="true" className="aurora absolute inset-0 -z-10" />
       <div aria-hidden="true" className="grid-lines absolute inset-0 -z-10" />
 

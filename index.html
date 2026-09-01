@@ -2,10 +2,49 @@
 <html lang="fa" dir="rtl">
   <head>
     <meta charset="UTF-8" />
+   <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
    <link rel="icon" type="image/png" href="/icons/icon-192.png" />
-   <meta name="google-site-verification" content="X-oOznobY8Y4DCZGGQSQ2leptwCqSP-2FBuaQSrU_ZY" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="google-site-verification" content="X-oOznobY8Y4DCZGGQSQ2leptwCqSP-2FBuaQSrU_ZY" />
+    <!-- === رفع باگ: نوار اعلانیهٔ سقف سایت روی موبایل‌ها نصفه/بریده نمایش داده می‌شد ===
+         علت واقعی مربوط به کلاس‌های CSS نوار نبود؛ چون قبلاً «viewport-fit=cover»
+         در متاتگ viewport ست نشده بود، مقادیر env(safe-area-inset-*) (فاصله‌ی
+         امن بالای صفحه، مخصوص گوشی‌های دارای بریدگی/نوچ یا Dynamic Island، و
+         همچنین حالت PWA/standalone) همیشه صفر محاسبه می‌شدند. در نتیجه هدر
+         fixed (که در SiteHeader.jsx با top-0 چسبیده) در آن دستگاه‌ها زیر
+         نوار وضعیت/بریدگی گوشی می‌رفت و همان چیزی که «نصف نیمه ماندن» دیده
+         می‌شد رخ می‌داد. با اضافه‌شدن viewport-fit=cover این متغیرها اکنون
+         مقدار واقعی می‌گیرند و در SiteHeader.jsx به‌عنوان padding-top اضافه
+         به هدر اعمال می‌شوند تا محتوا همیشه پایین‌تر از ناحیه‌ی امن بیفتد —
+         روی همه‌ی دستگاه‌ها (نوچ‌دار، بدون نوچ، دسکتاپ) به‌درستی کار می‌کند،
+         چون در دستگاه‌های بدون نوچ این مقدار خودش صفر است. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!-- رنگ نوار مرورگر/PWA: این فقط یک مقدار پیش‌فرض اولیه‌ی ساده است؛
+         ThemeContext.jsx بلافاصله بعد از رندر آن را با تم واقعی/مؤثر
+         سایت (خودکار بر اساس دستگاه، یا انتخاب صریح کاربر) هماهنگ می‌کند. -->
+    <meta name="theme-color" content="#257D61" />
     <title>Pezhohesh_Portal</title>
+    <!-- === تم شب/روز: جلوگیری از فلاش رنگ اشتباه هنگام لود صفحه ===
+         این اسکریپت پیش از رندر ری‌اکت اجرا می‌شود و دقیقاً با منطق سه‌حالته‌ی
+         ThemeContext.jsx هماهنگ است: اگر کاربر قبلاً صریحاً «روشن» یا
+         «تاریک» را انتخاب کرده باشد همان اعمال می‌شود؛ در غیر این صورت
+         (چه هنوز هیچ انتخابی نشده، چه خودِ کاربر گزینه‌ی «هماهنگ با
+         دستگاهم» را زده) از تنظیم فعلی سیستم‌عامل/مرورگر پیروی می‌کند. -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('pazhuhesh-theme');
+          var isDark;
+          if (stored === 'dark') {
+            isDark = true;
+          } else if (stored === 'light') {
+            isDark = false;
+          } else {
+            isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          }
+          if (isDark) document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

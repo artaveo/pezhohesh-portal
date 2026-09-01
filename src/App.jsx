@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { AdminDataProvider } from './contexts/AdminDataContext';
 import { PortalDataProvider } from './contexts/PortalDataContext';
 import { AdminAuthProvider } from './contexts/AdminAuthContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import PortalLayout from './layouts/PortalLayout';
 
 /**
@@ -26,14 +27,16 @@ import PortalLayout from './layouts/PortalLayout';
  */
 export default function AppRouter() {
   return (
-    <BrowserRouter>
-      <AdminDataProvider>
-        <PortalDataProvider>
-          <AdminAuthProvider>
-            <PortalLayout />
-          </AdminAuthProvider>
-        </PortalDataProvider>
-      </AdminDataProvider>
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>
+        <AdminDataProvider>
+          <PortalDataProvider>
+            <AdminAuthProvider>
+              <PortalLayout />
+            </AdminAuthProvider>
+          </PortalDataProvider>
+        </AdminDataProvider>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }

@@ -4,6 +4,7 @@ import { useAdminAuth } from '../contexts/AdminAuthContext'
 import { SiteHeader } from '../components/SiteHeader'
 import { SiteFooter } from '../components/SiteFooter'
 import { ServiceFooter } from '../components/ServiceFooter'
+import { ThemePreferencePrompt } from '../components/ThemePreferencePrompt'
 import MainHomePage from '../pages/MainHomePage'
 import StudyLoungePage from '../pages/StudyLoungePage'
 import AcademicServicesPage from '../pages/AcademicServicesPage'
@@ -12,27 +13,11 @@ import AchievementsPage from '../pages/AchievementsPage'
 import ActiveScholarshipsPage from '../pages/ActiveScholarshipsPage'
 import LoginPage from '../pages/LoginPage'
 import AdminDashboard from '../pages/AdminDashboard'
-import ServicesAdminDashboard from '../pages/ServicesAdminDashboard'
 
 const SERVICE_ROUTES = ['/services', '/active-scholarships']
 
-// === رفع باگ گزارش‌شده (خیلی مهم) ===
-// در بررسی کد مشخص شد که ServicesAdminDashboard.jsx (پنل محدود دپارتمان
-// خدمات تحصیلی — یک فایل کامل و آماده، ۷۲ کیلوبایت) هیچ‌جای این فایل
-// import یا render نمی‌شد؛ مسیر «/admin» صرف‌نظر از currentAdminRole
-// همیشه فقط <AdminDashboard /> (پنل کامل ارشد) را نشان می‌داد. یعنی
-// سیم‌کشی «کدام ادمین کدام پنل را ببیند» اصلاً به این فایل وصل نشده بود.
-// این تابع کوچک همان تصمیم را می‌گیرد: ادمین ارشد → پنل کامل، ادمین
-// محدود خدمات تحصیلی → پنل محدود. اگر role به هر دلیلی نامشخص/جدید بود
-// (مثلاً null موقت حین بررسی)، به‌صورت امن پنل محدودتر نشان داده می‌شود
-// تا هرگز یک نقش ناشناخته به‌اشتباه دسترسی کامل نگیرد.
-function AdminRoute({ currentAdminRole }) {
-  if (currentAdminRole === 'super_admin') return <AdminDashboard />
-  return <ServicesAdminDashboard />
-}
-
 export default function PortalLayout() {
-  const { isAdminAuthenticated, currentAdminRole } = useAdminAuth()
+  const { isAdminAuthenticated } = useAdminAuth()
   const { pathname, hash } = useLocation()
 
   // === هماهنگ با ناوبری انکر «درباره ما» (SiteHeader.jsx) ===
@@ -76,7 +61,7 @@ export default function PortalLayout() {
 
           <Route
             path="/admin"
-            element={!isAdminAuthenticated ? <LoginPage /> : <AdminRoute currentAdminRole={currentAdminRole} />}
+            element={!isAdminAuthenticated ? <LoginPage /> : <AdminDashboard />}
           />
         </Routes>
       </main>
@@ -86,6 +71,12 @@ export default function PortalLayout() {
           - پنل ادمین/لاگین → بدون فوتر (صفحه کاری داخلی، نه صفحه عمومی)
           - بقیه صفحات → فوتر جامع سایت */}
       {!isAdminRoute && (isServiceSection ? <ServiceFooter /> : <SiteFooter />)}
+
+      {/* === درخواست تم برای بازدیدکننده‌ی تازه (ThemePreferencePrompt.jsx) ===
+          فقط روی صفحات عمومی؛ پنل ادمین/لاگین طبق همان فلسفه‌ی «صفحه کاری
+          داخلی» بالا، بدون کروم عمومی سایت می‌ماند. خودِ کامپوننت هم فقط
+          یک‌بار (تا وقتی کاربر انتخابی نکرده) چیزی رندر می‌کند. */}
+      {!isAdminRoute && <ThemePreferencePrompt />}
     </div>
   )
 }

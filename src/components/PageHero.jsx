@@ -8,7 +8,10 @@ import { ChevronLeft, Sparkles } from 'lucide-react'
  */
 export function PageHero({ eyebrow, title, desc, crumbs = [], stats, bgImage }) {
   return (
-    <section className="relative overflow-hidden pt-28 pb-12 sm:pt-36 sm:pb-16 lg:pt-40">
+    <section
+      className="relative overflow-hidden pb-12 sm:pb-16"
+      style={{ paddingTop: 'var(--header-clearance)' }}
+    >
       {/* === فاز۲: پس‌زمینه عکسی اختیاری ===
           فقط وقتی bgImage داده شود رندر می‌شود؛ اگر داده نشود رفتار قبلی
           (بدون تصویر پس‌زمینه) کاملاً بدون تغییر می‌ماند.
