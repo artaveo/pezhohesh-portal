@@ -43,10 +43,10 @@ export function ThemePreferencePrompt() {
           <X className="size-3.5" aria-hidden="true" />
         </button>
 
-        <p className="pe-8 text-sm font-semibold tracking-tight text-foreground">ظاهر سایت رو انتخاب کنید</p>
+        <p className="pe-8 text-sm font-semibold tracking-tight text-foreground">ظاهر سایت را انتخاب کنید</p>
         <p className="mt-1.5 pe-8 text-xs leading-relaxed text-muted-foreground">
-          می‌تونید تم سایت رو با دستگاه‌تون هماهنگ نگه دارید یا خودتون روشن یا تاریک رو انتخاب کنید. هر وقت
-          خواستید هم از دکمه‌ی بالای صفحه قابل تغییره.
+          می‌توانید تم سایت را با دستگاه‌تان هماهنگ نگه دارید یا خودتان روشن یا تاریک را انتخاب کنید. هر
+          زمانی که بخواهید نیز از دکمه‌ی بالای صفحه قابل تغییر است.
         </p>
 
         <div className="mt-4 grid grid-cols-3 gap-2">
