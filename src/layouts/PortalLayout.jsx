@@ -13,11 +13,12 @@ import AchievementsPage from '../pages/AchievementsPage'
 import ActiveScholarshipsPage from '../pages/ActiveScholarshipsPage'
 import LoginPage from '../pages/LoginPage'
 import AdminDashboard from '../pages/AdminDashboard'
+import ServicesAdminDashboard from '../pages/ServicesAdminDashboard'
 
 const SERVICE_ROUTES = ['/services', '/active-scholarships']
 
 export default function PortalLayout() {
-  const { isAdminAuthenticated } = useAdminAuth()
+  const { isAdminAuthenticated, currentAdminRole } = useAdminAuth()
   const { pathname, hash } = useLocation()
 
   // === هماهنگ با ناوبری انکر «درباره ما» (SiteHeader.jsx) ===
@@ -59,9 +60,27 @@ export default function PortalLayout() {
           <Route path="/achievements" element={<AchievementsPage />} />
           <Route path="/active-scholarships" element={<ActiveScholarshipsPage />} />
 
+          {/* === رفع باگ: پنل دپارتمانی (services_admin) همیشه پنل ارشد کامل را می‌دید ===
+              AdminAuthContext.jsx نقش واقعی کاربر (super_admin / services_admin) را
+              از قبل درست از جدول admin_users می‌خواند و در currentAdminRole نگه
+              می‌دارد، اما این مسیر هرگز به آن مقدار نگاه نمی‌کرد و بی‌قید‌وشرط
+              AdminDashboard (پنل کامل) را رندر می‌کرد — یعنی هر دو نقش، صرف‌نظر
+              از role واقعی‌شان در دیتابیس، وارد همان یک پنل ارشد می‌شدند. اکنون
+              فقط وقتی currentAdminRole برابر 'services_admin' است، پنل محدود
+              دپارتمانی (ServicesAdminDashboard) نمایش داده می‌شود؛ در غیر این
+              صورت (super_admin یا مقدار پیش‌فرض قدیمی) رفتار قبلی دقیقاً حفظ
+              شده — هیچ ادمین ارشد فعلی چیزی را از دست نمی‌دهد. */}
           <Route
             path="/admin"
-            element={!isAdminAuthenticated ? <LoginPage /> : <AdminDashboard />}
+            element={
+              !isAdminAuthenticated ? (
+                <LoginPage />
+              ) : currentAdminRole === 'services_admin' ? (
+                <ServicesAdminDashboard />
+              ) : (
+                <AdminDashboard />
+              )
+            }
           />
         </Routes>
       </main>
