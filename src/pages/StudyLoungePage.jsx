@@ -24,7 +24,7 @@ export default function StudyLoungePage() {
   // همان یک سالن) را توصیف می‌کنند، از همان دو فیلد پنل ادمین استفاده
   // می‌شود — نه یک فیلد جداگانه و تکراری — تا هر تغییری در پنل، همزمان
   // هر دو صفحه را به‌روز نگه دارد.
-  const heroHoursWeekday = portalData?.heroHoursWeekday || 'شنبه تا پنج‌شنبه ۶ صبح تا ۷ شام'
+  const heroHoursWeekday = portalData?.heroHoursWeekday || 'شنبه تا پنج‌شنبه ۷ صبح تا ۶ شام'
   const heroHoursFriday = portalData?.heroHoursFriday || 'جمعه‌ها ۹ صبح تا ۳ بعدازظهر'
   const loungeEyebrow = `ظرفیت آزاد — ${heroHoursWeekday}، ${heroHoursFriday}`
 
