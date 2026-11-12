@@ -478,7 +478,7 @@ export default function AdminDashboard() {
   // قبلاً این کپشن ادعا می‌کرد سالن «۷ روز هفته — ۸ صبح تا ۱۲ شب» باز
   // است که با ساعات کاری واقعی هم‌خوانی نداشت. مقدار پیش‌فرض جدید دقیقاً
   // همان ساعات کاری واقعی سالن (شنبه تا پنج‌شنبه، جدا از جمعه‌ها) است.
-  const [heroHoursWeekday, setHeroHoursWeekday] = useState(adminData?.heroHoursWeekday || 'شنبه تا پنج‌شنبه ۶ صبح تا ۷ شام');
+  const [heroHoursWeekday, setHeroHoursWeekday] = useState(adminData?.heroHoursWeekday || 'شنبه تا پنج‌شنبه ۷ صبح تا ۶ شام');
   const [heroHoursFriday, setHeroHoursFriday] = useState(adminData?.heroHoursFriday || 'جمعه‌ها ۹ صبح تا ۳ بعدازظهر');
 
   // === جدید (بخش ۱۰): آمار چهارگانه هیروی صفحه اختصاصی سالن مطالعه ===
